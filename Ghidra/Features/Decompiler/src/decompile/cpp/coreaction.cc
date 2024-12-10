@@ -5575,7 +5575,7 @@ void ActionDatabase::universalAction(Architecture *conf)
       actmainloop->addAction( actprop2 );
       actmainloop->addAction( new ActionDeterminedBranch("unreachable") );
       actmainloop->addAction( new ActionUnreachable("unreachable") );
-      actmainloop->addAction( new ActionNodeJoin("nodejoin") );
+      //actmainloop->addAction( new ActionNodeJoin("nodejoin") );
       actmainloop->addAction( new ActionConditionalExe("conditionalexe") );
       actmainloop->addAction( new ActionConditionalConst("analysis") );
     }
