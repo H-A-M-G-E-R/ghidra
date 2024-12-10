@@ -1439,7 +1439,15 @@ bool CollapseStructure::ruleBlockIfElse(FlowBlock *bl)
   if (tc->isGotoOut(0)) return false;
   if (fc->isGotoOut(0)) return false;
   
-  graph.newBlockIfElse(bl,tc,fc);
+  BlockBasic *bl1 = (BlockBasic *)tc->getFrontLeaf()->subBlock(0);
+  BlockBasic *bl2 = (BlockBasic *)fc->getFrontLeaf()->subBlock(0);
+  if (bl1->getEntryAddr() < bl2->getEntryAddr()) {
+    graph.newBlockIfElse(bl,tc,fc);
+    return true;
+  }
+  if (bl->negateCondition(true))
+	    dataflow_changecount += 1;
+  graph.newBlockIfElse(bl,fc,tc);
   return true;
 }
 
