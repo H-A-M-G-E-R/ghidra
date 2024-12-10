@@ -54,7 +54,7 @@ OpToken PrintC::boolean_and = { "&&", "", 2, 22, false, OpToken::binary, 1, 0, (
 OpToken PrintC::boolean_xor = { "^^", "", 2, 20, false, OpToken::binary, 1, 0, (OpToken *)0 };
 OpToken PrintC::boolean_or = { "||", "", 2, 18, false, OpToken::binary, 1, 0, (OpToken *)0 };
 OpToken PrintC::assignment = { "=", "", 2, 14, false, OpToken::binary, 1, 5, (OpToken *)0 };
-OpToken PrintC::comma = { ",", "", 2, 2, true, OpToken::binary, 0, 0, (OpToken *)0 };
+OpToken PrintC::comma = { ", ", "", 2, 2, true, OpToken::binary, 0, 0, (OpToken *)0 };
 OpToken PrintC::new_op = { "", "", 2, 62, false, OpToken::space, 1, 0, (OpToken *)0 };
 
 // Inplace assignment operators
@@ -584,6 +584,7 @@ void PrintC::opBranchind(const PcodeOp *op)
 {
   // FIXME:  This routine shouldn't emit directly
   emit->tagOp(KEYWORD_SWITCH,EmitMarkup::keyword_color,op);	// Print header for switch
+  emit->spaces(1);
   int4 id = emit->openParen(OPEN_PAREN);
   pushVn(op->getIn(0),op,mods);
   recurse();
@@ -2229,8 +2230,10 @@ void PrintC::emitPrototypeInputs(const FuncProto *proto)
   else {
     bool printComma = false;
     for(int4 i=0;i<sz;++i) {
-      if (printComma)
-	emit->print(COMMA);
+      if (printComma) {
+	      emit->print(COMMA);
+        emit->spaces(1);
+      }
       ProtoParameter *param = proto->getParam(i);
       if (isSet(hide_thisparam) && param->isThisPointer())
 	continue;
@@ -2248,8 +2251,10 @@ void PrintC::emitPrototypeInputs(const FuncProto *proto)
     }
   }
   if (proto->isDotdotdot()) {
-    if (sz != 0)
-      emit->print(COMMA);
+    if (sz != 0) {
+	    emit->print(COMMA);
+      emit->spaces(1);
+    }
     emit->print(DOTDOTDOT);
   }
 }
@@ -2923,7 +2928,8 @@ void PrintC::emitBlockIf(const BlockIf *bl)
     emit->endBlock(id1);
     emit->closeBraceIndent(CLOSE_CURLY, id);
     if (bl->getSize() == 3) {
-      emit->tagLine();
+      //emit->tagLine();
+      emit->spaces(1);
       emit->print(KEYWORD_ELSE,EmitMarkup::keyword_color);
       FlowBlock *elseBlock = bl->getBlock(2);
       if (elseBlock->getType() == FlowBlock::t_if) {
@@ -3326,7 +3332,7 @@ void PrintC::emitBlockSwitch(const BlockSwitch *bl)
   setMod(only_branch|comma_separate);
   bl->getSwitchBlock()->emit(this);
   popMod();
-  emit->openBrace(OPEN_CURLY,option_brace_switch);
+  int4 id3 = emit->openBraceIndent(OPEN_CURLY,option_brace_switch);
 
   for(int4 i=0;i<bl->getNumCaseBlocks();++i) {
     emitSwitchCase(i,bl);
@@ -3347,8 +3353,7 @@ void PrintC::emitBlockSwitch(const BlockSwitch *bl)
     }
     emit->stopIndent(id);
   }
-  emit->tagLine();
-  emit->print(CLOSE_CURLY);
+  emit->closeBraceIndent(CLOSE_CURLY,id3);
   popMod();
 }
 
