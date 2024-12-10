@@ -5586,7 +5586,7 @@ void ActionDatabase::universalAction(Architecture *conf)
     actfullloop->addAction( new ActionDeadCode("deadcode") );
     actfullloop->addAction( new ActionDoNothing("deadcontrolflow") );
     actfullloop->addAction( new ActionSwitchNorm("switchnorm") );
-    actfullloop->addAction( new ActionReturnSplit("returnsplit") );
+    //actfullloop->addAction( new ActionReturnSplit("returnsplit") );
     actfullloop->addAction( new ActionUnjustifiedParams("protorecovery") );
     actfullloop->addAction( new ActionStartTypes("typerecovery") );
     actfullloop->addAction( new ActionActiveReturn("protorecovery") );
