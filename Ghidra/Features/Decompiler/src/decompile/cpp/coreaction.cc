@@ -5433,7 +5433,7 @@ void ActionDatabase::universalAction(Architecture *conf)
 	actprop->addRule( new RuleAndMask("analysis") );
 	actprop->addRule( new RuleOrConsume("analysis") );
 	actprop->addRule( new RuleOrCollapse("analysis") );
-	actprop->addRule( new RuleAndOrLump("analysis") );
+	//actprop->addRule( new RuleAndOrLump("analysis") );
 	actprop->addRule( new RuleShiftBitops("analysis") );
 	actprop->addRule( new RuleRightShiftAnd("analysis") );
 	actprop->addRule( new RuleNotDistribute("analysis") );
